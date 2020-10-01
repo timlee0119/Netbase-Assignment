@@ -1,0 +1,15 @@
+San Francisco - Sept. 29, 2004 - A recent national study conducted by Ponemon
+Institute and sponsored by TRUSTe, an online privacy nonprofit organization,
+revealed that 76 percent of consumers are experiencing an increase in spoofing
+and phishing incidents and that 35 percent of them receive fake emails at least
+once a week. The report estimates the nation's total monetary loss to victims
+of these incidents approximately $500 million.
+Based on a national sample of 1,335 Internet users across the United States,
+seven out of ten respondents revealed that they have unintentionally visited a
+spoofed Web site and more than 15 percent of spoofed respondents admit to being
+phished, providing sensitive private information including credit card number,
+checking account information and Social Security number. In total, a little
+more than 2% of all respondents believe that they experienced a direct monetary
+loss resulting from the phishing attack. Most people recognized this loss
+within the first 2 weeks after being phished.
+
