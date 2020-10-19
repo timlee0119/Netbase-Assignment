@@ -2,7 +2,29 @@ import java.io.*;
 import java.util.*;
 
 public class BigramParser {
-    private List<List<String>> bigrams = new ArrayList<>();
+    class Bigram {
+        private List<String> words;
+        public Bigram(String w1, String w2) {
+            words = new ArrayList<>();
+            words.add(w1);
+            words.add(w2);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Bigram bigram = (Bigram) o;
+            return this.words.get(0).equals(bigram.words.get(0)) && this.words.get(1).equals(bigram.words.get(1));
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(words);
+        }
+    }
+
+    private List<Bigram> bigrams = new ArrayList<>();
 
     private double documentProb;
 
@@ -16,6 +38,8 @@ public class BigramParser {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        String lastWord = "";
         while (in.hasNextLine()) {
             String currentLine = in.nextLine();
             String[] words = currentLine.split(" ");
@@ -23,25 +47,22 @@ public class BigramParser {
                 word = word.trim();
                 word = word.replaceAll("[^a-zA-Z0-9]", "");
                 if (word.isEmpty()) continue;
+                word = word.toLowerCase();
 
-                allWords.add(word.toLowerCase());
+                if (lastWord == "") {
+                    lastWord = word;
+                } else {
+                    bigrams.add(new Bigram(lastWord, word));
+                    lastWord = word;
+                }
             }
-        }
-
-        // get bigrams
-        int len = allWords.size();
-        for (int i = 0; i <= len - 2; ++i) {
-            List<String> bigram = new ArrayList<>();
-            bigram.add(allWords.get(i));
-            bigram.add(allWords.get(i + 1));
-            bigrams.add(bigram);
         }
     }
 
     public void calculateDocumentProb() {
         // populate frequency map
-        Map<List<String>, Integer> frequencyMap = new HashMap<>();
-        for (List<String> bigram : bigrams) {
+        Map<Bigram, Integer> frequencyMap = new HashMap<>();
+        for (Bigram bigram : bigrams) {
             if (!frequencyMap.containsKey(bigram)) {
                 frequencyMap.put(bigram, 1);
             }
@@ -53,7 +74,7 @@ public class BigramParser {
 
         // calculate prob
         double prob = 1.0;
-        for (List<String> bigram : bigrams) {
+        for (Bigram bigram : bigrams) {
             prob *= frequencyMap.get(bigram);
         }
         documentProb = Math.pow(prob, 1.0 / bigrams.size());
